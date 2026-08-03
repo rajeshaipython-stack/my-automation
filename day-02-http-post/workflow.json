@@ -1,0 +1,100 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "f1457871-4b22-4742-bf71-abedda958b30",
+      "name": "Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "title",
+              "value": "My first n8n post",
+              "type": "string"
+            },
+            {
+              "id": "a2",
+              "name": "body",
+              "value": "This post was created automatically with n8n!",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "19846338-b3e4-43e5-bf5f-493fc9228ab7",
+      "name": "Build Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        176,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://jsonplaceholder.typicode.com/posts",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "={{ $json.title }}"
+            },
+            {
+              "name": "body",
+              "value": "={{ $json.body }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6287c75c-766a-4ca7-8c71-be95dac3426f",
+      "name": "Send (POST)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        400,
+        96
+      ]
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Build Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Data": {
+      "main": [
+        [
+          {
+            "node": "Send (POST)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "d9eb5a22d9ffc3305d2279bbae50e08410ef85a3a72d6a4bb1fcb1fd84c6dc12"
+  }
+}
