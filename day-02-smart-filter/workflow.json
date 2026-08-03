@@ -1,0 +1,89 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "a89e5ad0-386d-4df6-9778-b6ac19d4e6fa",
+      "name": "Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        16
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const nums = [];\nfor (let i = 0; i < 10; i++) {\n  nums.push({ json: { value: Math.floor(Math.random() * 100) + 1 } });\n}\nreturn nums;"
+      },
+      "id": "ca49b053-30b5-4dcb-94e0-056315bc1623",
+      "name": "Make 10 Numbers",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        64,
+        16
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f1",
+              "leftValue": "={{ $json.value }}",
+              "rightValue": 50,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "1def7437-8f76-400c-a0e5-748537435253",
+      "name": "Keep only > 50",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        288,
+        16
+      ]
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Make 10 Numbers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Make 10 Numbers": {
+      "main": [
+        [
+          {
+            "node": "Keep only > 50",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "d9eb5a22d9ffc3305d2279bbae50e08410ef85a3a72d6a4bb1fcb1fd84c6dc12"
+  }
+}
