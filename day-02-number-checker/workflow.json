@@ -1,0 +1,153 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "89d29f59-310c-4a4f-873a-8a9de37f7d8e",
+      "name": "Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -752,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: { number: Math.floor(Math.random() * 100) + 1 } }];"
+      },
+      "id": "da4a8f81-1a2f-447e-998e-0a9a228a4c15",
+      "name": "Random Number",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -560,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cond1",
+              "leftValue": "={{ $json.number }}",
+              "rightValue": 50,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d0dd2b1b-bf1e-4477-ada2-24c8cae49066",
+      "name": "Is it > 50?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -336,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "message",
+              "value": "=🔥 {{ $json.number }} is a HIGH number!",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "644fddef-54b8-499f-8664-0b1bf6067b2f",
+      "name": "High",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -112,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a2",
+              "name": "message",
+              "value": "=❄️ {{ $json.number }} is a LOW number!",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "615edcf1-44c4-461f-9aa0-a8545fdcb48e",
+      "name": "Low",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -112,
+        256
+      ]
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Random Number",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Random Number": {
+      "main": [
+        [
+          {
+            "node": "Is it > 50?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is it > 50?": {
+      "main": [
+        [
+          {
+            "node": "High",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Low",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "d9eb5a22d9ffc3305d2279bbae50e08410ef85a3a72d6a4bb1fcb1fd84c6dc12"
+  }
+}
