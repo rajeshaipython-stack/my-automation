@@ -1,0 +1,77 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "path": "fact",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "4663152d-70ff-4962-8c48-5835947ac4b5",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        -16
+      ],
+      "webhookId": "4501f7c9-ccd8-4ce6-8daf-d0a893c08f03"
+    },
+    {
+      "parameters": {
+        "url": "https://uselessfacts.jsph.pl/api/v2/facts/random",
+        "options": {}
+      },
+      "id": "0649ec1d-0746-484c-a37e-16e4b8d45b95",
+      "name": "Get Fact",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        64,
+        -80
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.text }}",
+        "options": {}
+      },
+      "id": "c3c86542-8b8f-4f10-bef4-c367a2f11aa7",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        288,
+        -16
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get Fact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Fact": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "d9eb5a22d9ffc3305d2279bbae50e08410ef85a3a72d6a4bb1fcb1fd84c6dc12"
+  }
+}
