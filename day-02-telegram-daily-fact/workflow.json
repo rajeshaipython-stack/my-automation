@@ -1,0 +1,91 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "id": "eac0b15b-9dcf-4b57-ae58-adccc6a5e462",
+      "name": "Every Day 9AM",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -240,
+        -192
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://uselessfacts.jsph.pl/api/v2/facts/random",
+        "options": {}
+      },
+      "id": "3c435b46-f746-4f13-a2cd-12eb50adbfc2",
+      "name": "Get Fact",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -32,
+        -336
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "=8046157802",
+        "text": "=📚 Did you know?\n\n{{ $json.text }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "id": "2638705c-fb16-4976-8447-bd1d3ae11c83",
+      "name": "Send to Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        -192
+      ],
+      "webhookId": "79dcc2f6-4830-45df-acc6-27240688a004",
+      "credentials": {
+        "telegramApi": {
+          "id": "mTu0XlYZMa9GlpYE",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Every Day 9AM": {
+      "main": [
+        [
+          {
+            "node": "Get Fact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Fact": {
+      "main": [
+        [
+          {
+            "node": "Send to Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d9eb5a22d9ffc3305d2279bbae50e08410ef85a3a72d6a4bb1fcb1fd84c6dc12"
+  }
+}
