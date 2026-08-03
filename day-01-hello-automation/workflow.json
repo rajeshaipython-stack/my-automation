@@ -1,0 +1,80 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "066009a2-a389-4cf1-9a98-7fd0dbcbb831",
+      "name": "Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.adviceslip.com/advice",
+        "options": {}
+      },
+      "id": "63633387-e7b5-4fc0-921a-7baf1e3abb0c",
+      "name": "Get Advice",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        288,
+        -96
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f1",
+              "name": "message",
+              "value": "=💡 Today's advice: {{ $json.slip.advice }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "54471ea8-da65-4179-a633-7cedadd66121",
+      "name": "Format Message",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        528,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Get Advice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Advice": {
+      "main": [
+        [
+          {
+            "node": "Format Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "d9eb5a22d9ffc3305d2279bbae50e08410ef85a3a72d6a4bb1fcb1fd84c6dc12"
+  }
+}
