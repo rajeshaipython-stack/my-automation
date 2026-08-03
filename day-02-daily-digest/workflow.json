@@ -1,0 +1,111 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "6e5102c6-d972-4acb-96b9-fe86f7a375f8",
+      "name": "Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://jsonplaceholder.typicode.com/posts?_limit=5",
+        "options": {}
+      },
+      "id": "4f2cb7eb-33d3-484a-9d38-1e0603fdd868",
+      "name": "Get 5 Posts",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        128,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "title"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5711e4ed-02a6-4695-99ff-96ceab3341fa",
+      "name": "Combine Titles",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        320,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "digest",
+              "value": "=📋 Today's Digest: {{ $json.title.join(', ') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6ae956e7-9e09-45e1-b4b4-e6aab8b50007",
+      "name": "Build Digest",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        528,
+        160
+      ]
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Get 5 Posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get 5 Posts": {
+      "main": [
+        [
+          {
+            "node": "Combine Titles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine Titles": {
+      "main": [
+        [
+          {
+            "node": "Build Digest",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "d9eb5a22d9ffc3305d2279bbae50e08410ef85a3a72d6a4bb1fcb1fd84c6dc12"
+  }
+}
