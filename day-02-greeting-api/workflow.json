@@ -1,0 +1,111 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "path": "hello",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "55c5dfdc-1f55-4ca9-9c5f-ea2346161bf1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -224,
+        48
+      ],
+      "webhookId": "a4d10010-8dc1-44d1-b8be-c2ffe2b93305"
+    },
+    {
+      "parameters": {
+        "url": "https://uselessfacts.jsph.pl/api/v2/facts/random",
+        "options": {}
+      },
+      "id": "dedd1b01-6364-40b6-b7b6-7ca956cd61fa",
+      "name": "Get Fact",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "greeting",
+              "value": "=Hello {{ $('Webhook').item.json.query.name || 'friend' }}! 👋 Did you know? {{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d61ee188-1d45-4e2f-9011-9419aefffb65",
+      "name": "Build Reply",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.greeting }}",
+        "options": {}
+      },
+      "id": "0a564f0f-bd9d-4143-9ecd-035321878ac9",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        48
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get Fact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Fact": {
+      "main": [
+        [
+          {
+            "node": "Build Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Reply": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "d9eb5a22d9ffc3305d2279bbae50e08410ef85a3a72d6a4bb1fcb1fd84c6dc12"
+  }
+}
